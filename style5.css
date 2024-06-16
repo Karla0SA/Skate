@@ -1,0 +1,42 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background: url("fundo.jpg");
+    background-size: 100%;
+}
+.text a{
+    color: rgb(199, 199, 7);
+    font-family: cursive;
+    text-decoration: none;
+    text-align: inherit;
+    padding: 4px;
+    width: 10px;
+    font-size: 20px;
+}
+.text a:hover{
+    color: rgb(244, 246, 246);
+    text-decoration: none;
+}
+header, h6{
+    text-align: center; 
+    color: yellow;
+    font-family: Arial;
+}
+header{
+    font-size: 40px;
+}
+h2{
+    padding: 10px;
+    font-family: Arial, monospace;
+}
+.text{
+    background-color: rgba(2, 3, 0, 0.559);
+    color: rgb(222, 222, 171);
+    height: 100%;
+}
+footer{
+    margin-top: 50px;
+    text-align: center;
+}
