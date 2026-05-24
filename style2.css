@@ -1,0 +1,56 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body{
+    background: url("fundo.jpg");
+    background-size: 100%;
+}
+.text a{
+    color: rgb(199, 199, 7);
+    font-family: cursive;
+    text-decoration: none;
+    text-align: inherit;
+    padding: 4px;
+    width: 10px;
+    font-size: 20px;
+}
+.text a:hover{
+    color: rgb(244, 246, 246);
+    text-decoration: none;
+}
+header, h6{
+    text-align: center; 
+    color: yellow;
+    font-family: Arial;
+}
+header{
+    font-size: 40px;
+}
+h3, h2{
+    padding: 8px;
+    font-family: Arial, monospace;
+}
+h4{
+    margin: 10px;
+    font-size: x-large;
+}
+.text{
+    background-color: rgba(2, 3, 0, 0.621);
+    color: rgb(222, 222, 171);
+    height: 100%;
+}
+#ft2{
+    width: 22%;
+    margin-left: 495px;
+}
+#ft{
+    width: 15%;
+    margin-left: 495px;
+}
+footer{
+    margin-top: 20px;
+}
+title{
+    font-family: sans-serif;
+}
