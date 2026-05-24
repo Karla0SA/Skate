@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TiposDeSkateRouteImport } from './routes/tipos-de-skate'
+import { Route as JogosOnlineRouteImport } from './routes/jogos-online'
+import { Route as EventosRouteImport } from './routes/eventos'
+import { Route as ContatosRouteImport } from './routes/contatos'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TiposDeSkateRoute = TiposDeSkateRouteImport.update({
+  id: '/tipos-de-skate',
+  path: '/tipos-de-skate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JogosOnlineRoute = JogosOnlineRouteImport.update({
+  id: '/jogos-online',
+  path: '/jogos-online',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventosRoute = EventosRouteImport.update({
+  id: '/eventos',
+  path: '/eventos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContatosRoute = ContatosRouteImport.update({
+  id: '/contatos',
+  path: '/contatos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,83 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contatos': typeof ContatosRoute
+  '/eventos': typeof EventosRoute
+  '/jogos-online': typeof JogosOnlineRoute
+  '/tipos-de-skate': typeof TiposDeSkateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contatos': typeof ContatosRoute
+  '/eventos': typeof EventosRoute
+  '/jogos-online': typeof JogosOnlineRoute
+  '/tipos-de-skate': typeof TiposDeSkateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contatos': typeof ContatosRoute
+  '/eventos': typeof EventosRoute
+  '/jogos-online': typeof JogosOnlineRoute
+  '/tipos-de-skate': typeof TiposDeSkateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/contatos'
+    | '/eventos'
+    | '/jogos-online'
+    | '/tipos-de-skate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/contatos' | '/eventos' | '/jogos-online' | '/tipos-de-skate'
+  id:
+    | '__root__'
+    | '/'
+    | '/contatos'
+    | '/eventos'
+    | '/jogos-online'
+    | '/tipos-de-skate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContatosRoute: typeof ContatosRoute
+  EventosRoute: typeof EventosRoute
+  JogosOnlineRoute: typeof JogosOnlineRoute
+  TiposDeSkateRoute: typeof TiposDeSkateRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tipos-de-skate': {
+      id: '/tipos-de-skate'
+      path: '/tipos-de-skate'
+      fullPath: '/tipos-de-skate'
+      preLoaderRoute: typeof TiposDeSkateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jogos-online': {
+      id: '/jogos-online'
+      path: '/jogos-online'
+      fullPath: '/jogos-online'
+      preLoaderRoute: typeof JogosOnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/eventos': {
+      id: '/eventos'
+      path: '/eventos'
+      fullPath: '/eventos'
+      preLoaderRoute: typeof EventosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contatos': {
+      id: '/contatos'
+      path: '/contatos'
+      fullPath: '/contatos'
+      preLoaderRoute: typeof ContatosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +132,21 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContatosRoute: ContatosRoute,
+  EventosRoute: EventosRoute,
+  JogosOnlineRoute: JogosOnlineRoute,
+  TiposDeSkateRoute: TiposDeSkateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
