@@ -72,19 +72,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "SKATE — Jogos, copas e muito mais sobre o esporte" },
+      { name: "description", content: "Site sobre skate: tipos de skate, jogos online, eventos nacionais e mundiais." },
+      { name: "author", content: "Karla" },
+      { property: "og:title", content: "SKATE — Jogos, copas e muito mais sobre o esporte" },
+      { property: "og:description", content: "Site sobre skate: tipos de skate, jogos online, eventos nacionais e mundiais." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+    ],
+    scripts: [
+      {
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5820918534462209",
+        async: true,
+        crossOrigin: "anonymous",
       },
     ],
   }),
@@ -96,7 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <head>
         <HeadContent />
       </head>
