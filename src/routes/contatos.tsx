@@ -22,16 +22,9 @@ const schema = z.object({
   email: z
     .string()
     .trim()
+    .min(1, "Informe seu e-mail")
     .max(255)
-    .email("E-mail inválido")
-    .optional()
-    .or(z.literal("")),
-  telefone: z
-    .string()
-    .trim()
-    .min(8, "Telefone muito curto")
-    .max(20, "Telefone muito longo")
-    .regex(/^[0-9()\-\s+]+$/, "Use apenas números e símbolos válidos"),
+    .email("E-mail inválido"),
   anonimo: z.enum(["sim", "nao"], { message: "Selecione uma opção" }),
   mensagem: z
     .string()
@@ -63,7 +56,6 @@ function Contatos() {
     const data = {
       nome: (fd.get("nome") as string) ?? "",
       email: (fd.get("email") as string) ?? "",
-      telefone: (fd.get("telefone") as string) ?? "",
       anonimo: fd.get("anonimo") as string,
       mensagem: (fd.get("mensagem") as string) ?? "",
     };
@@ -83,8 +75,7 @@ function Contatos() {
     const v = parsed.data;
     const { error } = await supabase.from("contact_messages").insert({
       name: v.anonimo === "sim" ? null : v.nome || null,
-      email: v.anonimo === "sim" ? null : v.email || null,
-      phone: v.telefone,
+      email: v.email,
       anonymous: v.anonimo === "sim",
       message: v.mensagem,
     });
@@ -137,24 +128,11 @@ function Contatos() {
           </div>
 
           <div>
-            <label htmlFor="email">E-mail (opcional):</label>
-            <input id="email" name="email" type="email" maxLength={255} placeholder="voce@exemplo.com" />
+            <label htmlFor="email">E-mail:</label>
+            <input id="email" name="email" type="email" maxLength={255} placeholder="voce@exemplo.com" required />
             {errors.email && <div className="skate-error">{errors.email}</div>}
           </div>
 
-          <div>
-            <label htmlFor="telefone">Telefone para contato:</label>
-            <input
-              id="telefone"
-              name="telefone"
-              type="tel"
-              inputMode="tel"
-              maxLength={20}
-              placeholder="(11) 99999-9999"
-              required
-            />
-            {errors.telefone && <div className="skate-error">{errors.telefone}</div>}
-          </div>
 
           <fieldset style={{ border: "none", padding: 0 }}>
             <legend style={{ fontWeight: 600, color: "#ffec70", marginBottom: "0.4rem" }}>
