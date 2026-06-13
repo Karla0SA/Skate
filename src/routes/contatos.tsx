@@ -41,6 +41,7 @@ function Contatos() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>("");
+  const sendToKSA = useServerFn(sendContactToKSA);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -75,22 +76,24 @@ function Contatos() {
 
     setStatus("loading");
     const v = parsed.data;
-    const { error } = await supabase.from("contact_messages").insert({
-      name: v.anonimo === "sim" ? null : v.nome || null,
-      email: v.email,
-      anonymous: v.anonimo === "sim",
-      message: v.mensagem,
-    });
-
-    if (error) {
+    try {
+      await sendToKSA({
+        data: {
+          nome: v.anonimo === "sim" ? "" : v.nome || "",
+          email: v.email,
+          anonimo: v.anonimo === "sim",
+          mensagem: v.mensagem,
+        },
+      });
+      setStatus("success");
+    } catch {
       setStatus("error");
       setServerError(
-        "Não foi possível enviar agora. Tente novamente em instantes."
+        "Não foi possível enviar sua mensagem agora. Tente novamente em instantes."
       );
-      return;
     }
-    setStatus("success");
   }
+
 
   return (
     <SkateLayout>
