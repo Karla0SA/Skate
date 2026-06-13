@@ -128,24 +128,11 @@ function Contatos() {
           </div>
 
           <div>
-            <label htmlFor="email">E-mail (opcional):</label>
-            <input id="email" name="email" type="email" maxLength={255} placeholder="voce@exemplo.com" />
+            <label htmlFor="email">E-mail:</label>
+            <input id="email" name="email" type="email" maxLength={255} placeholder="voce@exemplo.com" required />
             {errors.email && <div className="skate-error">{errors.email}</div>}
           </div>
 
-          <div>
-            <label htmlFor="telefone">Telefone para contato:</label>
-            <input
-              id="telefone"
-              name="telefone"
-              type="tel"
-              inputMode="tel"
-              maxLength={20}
-              placeholder="(11) 99999-9999"
-              required
-            />
-            {errors.telefone && <div className="skate-error">{errors.telefone}</div>}
-          </div>
 
           <fieldset style={{ border: "none", padding: 0 }}>
             <legend style={{ fontWeight: 600, color: "#ffec70", marginBottom: "0.4rem" }}>
