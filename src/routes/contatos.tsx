@@ -56,7 +56,6 @@ function Contatos() {
     const data = {
       nome: (fd.get("nome") as string) ?? "",
       email: (fd.get("email") as string) ?? "",
-      telefone: (fd.get("telefone") as string) ?? "",
       anonimo: fd.get("anonimo") as string,
       mensagem: (fd.get("mensagem") as string) ?? "",
     };
@@ -76,8 +75,7 @@ function Contatos() {
     const v = parsed.data;
     const { error } = await supabase.from("contact_messages").insert({
       name: v.anonimo === "sim" ? null : v.nome || null,
-      email: v.anonimo === "sim" ? null : v.email || null,
-      phone: v.telefone,
+      email: v.email,
       anonymous: v.anonimo === "sim",
       message: v.mensagem,
     });
