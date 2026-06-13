@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { SkateLayout } from "@/components/SkateLayout";
 import { useState } from "react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { sendContactToKSA } from "@/lib/ksa.functions";
+
 
 export const Route = createFileRoute("/contatos")({
   head: () => ({
