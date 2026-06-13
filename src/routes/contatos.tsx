@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { SkateLayout } from "@/components/SkateLayout";
 import { useState } from "react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
+import { sendContactToKSA } from "@/lib/ksa.functions";
+
 
 export const Route = createFileRoute("/contatos")({
   head: () => ({
@@ -39,6 +41,7 @@ function Contatos() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string>("");
+  const sendToKSA = useServerFn(sendContactToKSA);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -73,22 +76,24 @@ function Contatos() {
 
     setStatus("loading");
     const v = parsed.data;
-    const { error } = await supabase.from("contact_messages").insert({
-      name: v.anonimo === "sim" ? null : v.nome || null,
-      email: v.email,
-      anonymous: v.anonimo === "sim",
-      message: v.mensagem,
-    });
-
-    if (error) {
+    try {
+      await sendToKSA({
+        data: {
+          nome: v.anonimo === "sim" ? "" : v.nome || "",
+          email: v.email,
+          anonimo: v.anonimo === "sim",
+          mensagem: v.mensagem,
+        },
+      });
+      setStatus("success");
+    } catch {
       setStatus("error");
       setServerError(
-        "Não foi possível enviar agora. Tente novamente em instantes."
+        "Não foi possível enviar sua mensagem agora. Tente novamente em instantes."
       );
-      return;
     }
-    setStatus("success");
   }
+
 
   return (
     <SkateLayout>
@@ -100,7 +105,7 @@ function Contatos() {
 
       {status === "success" && (
         <div className="skate-alert success" role="status">
-          ✓ Obrigado! Sua mensagem foi recebida e será avaliada em breve.
+          ✓ Mensagem enviada com sucesso. Obrigado pelo contato!
         </div>
       )}
       {status === "error" && (
