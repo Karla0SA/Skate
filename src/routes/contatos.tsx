@@ -22,16 +22,9 @@ const schema = z.object({
   email: z
     .string()
     .trim()
+    .min(1, "Informe seu e-mail")
     .max(255)
-    .email("E-mail inválido")
-    .optional()
-    .or(z.literal("")),
-  telefone: z
-    .string()
-    .trim()
-    .min(8, "Telefone muito curto")
-    .max(20, "Telefone muito longo")
-    .regex(/^[0-9()\-\s+]+$/, "Use apenas números e símbolos válidos"),
+    .email("E-mail inválido"),
   anonimo: z.enum(["sim", "nao"], { message: "Selecione uma opção" }),
   mensagem: z
     .string()
