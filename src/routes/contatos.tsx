@@ -105,7 +105,7 @@ function Contatos() {
 
       {status === "success" && (
         <div className="skate-alert success" role="status">
-          ✓ Obrigado! Sua mensagem foi recebida e será avaliada em breve.
+          ✓ Mensagem enviada com sucesso. Obrigado pelo contato!
         </div>
       )}
       {status === "error" && (
