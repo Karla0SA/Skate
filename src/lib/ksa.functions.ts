@@ -18,18 +18,25 @@ export const sendContactToKSA = createServerFn({ method: "POST" })
     return parsed;
   })
   .handler(async ({ data }) => {
-    const baseUrl = process.env.KSA_BASE_URL;
     const apiKey = process.env.KSA_API_KEY;
     const timestamp = new Date().toISOString();
     const origem = "Tudo Sobre Skate";
 
-    if (!baseUrl || !apiKey) {
+    if (!apiKey) {
       console.error(JSON.stringify({
         origem, status: "config_error",
-        error: "KSA_BASE_URL ou KSA_API_KEY ausente", timestamp,
+        error: "KSA_API_KEY ausente", timestamp,
       }));
       throw new Error("Configuração da Central KSA ausente");
     }
+
+    // Normaliza KSA_BASE_URL: aceita tanto "https://meuinbox.lovable.app"
+    // quanto a URL completa do endpoint (caso o secret tenha sido colado inteiro).
+    const rawBase = (process.env.KSA_BASE_URL ?? "https://meuinbox.lovable.app").trim();
+    const baseRoot = rawBase
+      .replace(/\/+$/, "")
+      .replace(/\/api\/public\/messages$/i, "");
+    const endpoint = `${baseRoot}/api/public/messages`;
 
     const payload = {
       site_origem: origem,
@@ -43,7 +50,6 @@ export const sendContactToKSA = createServerFn({ method: "POST" })
       data_hora: timestamp,
     };
 
-    const endpoint = `${baseUrl.replace(/\/$/, "")}/api/public/messages`;
 
     try {
       const res = await fetch(endpoint, {
@@ -57,7 +63,7 @@ export const sendContactToKSA = createServerFn({ method: "POST" })
 
       console.log(JSON.stringify({
         origem, status: res.ok ? "success" : "http_error",
-        httpStatus: res.status, timestamp,
+        httpStatus: res.status, endpoint, timestamp,
       }));
 
       if (!res.ok) {
