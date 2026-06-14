@@ -63,7 +63,7 @@ export const sendContactToKSA = createServerFn({ method: "POST" })
 
       console.log(JSON.stringify({
         origem, status: res.ok ? "success" : "http_error",
-        httpStatus: res.status, timestamp,
+        httpStatus: res.status, endpoint, timestamp,
       }));
 
       if (!res.ok) {
