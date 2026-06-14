@@ -50,7 +50,6 @@ export const sendContactToKSA = createServerFn({ method: "POST" })
       data_hora: timestamp,
     };
 
-    const endpoint = `${baseUrl.replace(/\/$/, "")}/api/public/messages`;
 
     try {
       const res = await fetch(endpoint, {
