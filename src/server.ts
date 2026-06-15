@@ -25,6 +25,26 @@ function brandedErrorResponse(): Response {
   });
 }
 
+const legacyRouteRedirects: Record<string, string> = {
+  "/index": "/",
+  "/index.html": "/",
+  "/index2.html": "/tipos-de-skate",
+  "/index3.html": "/jogos-online",
+  "/index4.html": "/eventos",
+  "/index5.html": "/contatos",
+};
+
+function redirectLegacyRoute(request: Request): Response | undefined {
+  if (request.method !== "GET" && request.method !== "HEAD") return undefined;
+
+  const url = new URL(request.url);
+  const targetPath = legacyRouteRedirects[url.pathname];
+  if (!targetPath) return undefined;
+
+  url.pathname = targetPath;
+  return Response.redirect(url.toString(), 308);
+}
+
 function isCatastrophicSsrErrorBody(body: string, responseStatus: number): boolean {
   let payload: unknown;
   try {
@@ -69,6 +89,9 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const legacyRedirect = redirectLegacyRoute(request);
+      if (legacyRedirect) return legacyRedirect;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
